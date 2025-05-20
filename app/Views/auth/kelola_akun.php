@@ -80,7 +80,7 @@
                         </div>
                     <?php endif ?>
                     <div class="table-responsive">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="order-listing" class="table table-bordered table-striped">
 
                             <thead>
                                 <tr>
@@ -154,6 +154,8 @@
                                 <option value="">Pilih Level</option>
                                 <option value="admin" <?= $row['level'] == 'admin' ? 'selected' : '' ?>>Admin</option>
                                 <option value="user" <?= $row['level'] == 'user' ? 'selected' : '' ?>>User</option>
+                                <option value="wali_kelas" <?= $row['level'] == 'wali_kelas' ? 'selected' : '' ?>>Wali Kelas
+                                </option>
                             </select>
                         </div>
                         <div class="form-group mt-3">

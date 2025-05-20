@@ -107,7 +107,7 @@
                         <input type="text" id="searchInput" class="form-control" placeholder="Cari Nama atau NIP...">
                     </div>
                     <div class="table-responsive">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="order-listing" class="table">
 
                             <thead>
                                 <tr>

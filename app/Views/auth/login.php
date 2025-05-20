@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Star Admin2 </title>
+    <title>Login Page </title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="<?= base_url('assets/src/') ?>assets/vendors/feather/feather.css">
     <link rel="stylesheet" href="<?= base_url('assets/src/') ?>assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -21,7 +21,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="<?= base_url('assets/src/') ?>assets/css/vertical-layout-light/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="<?= base_url('assets/src/') ?>assets/images/favicon.png" />
+   
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 
 
@@ -50,9 +50,7 @@
                 <div class="row w-100 mx-0">
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-                            <div class="brand-logo">
-                                <img src="<?= base_url('assets/src/') ?>assets/images/logo.svg" alt="logo">
-                            </div>
+
                             <?php if (session()->has('validation')): ?>
                                 <div class="alert alert-danger" role="alert">
                                     <?php $validation = session()->getFlashdata('validation'); ?>

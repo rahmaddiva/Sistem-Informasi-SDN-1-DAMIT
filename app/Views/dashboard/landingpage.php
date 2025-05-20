@@ -321,7 +321,8 @@
                         <?php foreach ($foto as $f): ?>
                             <div class="col-lg-4 col-md-6 portfolio-item filter-app">
                                 <div class="portfolio-wrap">
-                                    <img src="<?= base_url('foto_foto/' . $f['foto']) ?>" class="img-fluid" alt="">
+                                    <img src="<?= base_url('foto_foto/' . $f['foto']) ?>" class="img-fluid" alt=""
+                                        style="width: 400px; height: 400px; object-fit: cover;">
                                     <div class="portfolio-info">
                                         <h4><?= esc($f['judul']) ?></h4>
                                         <div class="portfolio-links">
@@ -335,6 +336,7 @@
                                 </div>
                             </div>
                         <?php endforeach; ?>
+
                     <?php else: ?>
                         <div class="col-lg-4 col-md-6 portfolio-item filter-app">
                             <div class="portfolio-wrap">

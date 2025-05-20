@@ -24,7 +24,11 @@
     <link rel="shortcut icon" href="<?= base_url('landingpage/') ?>assets/img/tutwuri.png" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.7.2/main.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="<?= base_url('assets/src/') ?>assets/vendors/jquery-toast-plugin/jquery.toast.min.css">
+  
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
 
     <style>
         #map {
@@ -122,11 +126,6 @@
         </div>
         <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-
-
-
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const subMenuLinks = document.querySelectorAll('#ui-basic .nav-link');
@@ -139,10 +138,10 @@
             });
         });
     </script>
-  
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="<?= base_url('assets/src/') ?>assets/vendors/jquery-toast-plugin/jquery.toast.min.js"></script>
+
     <!-- font awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <!-- plugins:js -->
@@ -153,6 +152,9 @@
     <!-- Plugin js for this page -->
     <script src="<?= base_url('assets/src/') ?>assets/vendors/chart.js/Chart.min.js"></script>
     <script src="<?= base_url('assets/src/') ?>assets/vendors/progressbar.js/progressbar.min.js"></script>
+    <!-- Plugin js for this page-->
+    <script src="<?= base_url('assets/src/') ?>assets/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="<?= base_url('assets/src/') ?>assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
     <!-- End plugin js for this page -->
     <!-- inject:js -->
     <script src="<?= base_url('assets/src/') ?>assets/js/off-canvas.js"></script>
@@ -163,8 +165,9 @@
     <!-- endinject -->
     <!-- Custom js for this page-->
     <script src="<?= base_url('assets/src/') ?>assets/js/jquery.cookie.js" type="text/javascript"></script>
-    <!-- <script src="../../<?= base_url('assets/src/') ?>assets/js/Chart.roundedBarCharts.js"></script> -->
-    <!-- End custom js for this page-->
+    <script src="<?= base_url('assets/src/') ?>assets/js/data-table.js"></script>
+
+
 </body>
 
 </html>

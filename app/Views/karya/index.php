@@ -119,7 +119,7 @@
                         <input type="text" id="searchInput" class="form-control" placeholder="Cari judul atau isi...">
                     </div>
                     <div class="table-responsive">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="order-listing" class="table">
                             <thead>
                                 <tr>
                                     <th>No</th>

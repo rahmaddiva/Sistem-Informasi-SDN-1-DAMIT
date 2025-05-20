@@ -82,6 +82,25 @@
             </div>
         </li>
 
+        <li class="nav-item nav-category">Penilaian</li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#penilaian" aria-expanded="false"
+                aria-controls="penilaian" id="userMenu">
+                <i class="menu-icon mdi mdi-account-school"></i>
+                <span class="menu-title">Kelola Nilai</span>
+            </a>
+            <div class="collapse" id="penilaian">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="/kelola_nilai">Kelola Nilai</a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="/kelola_semester">Semester</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="/kelola_mapel">Kelola Mapel</a>
+                    </li>
+
+                </ul>
+            </div>
+        </li>
+
 
         <li class="nav-item nav-category">Pengaduan</li>
         <li class="nav-item">

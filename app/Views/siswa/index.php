@@ -122,21 +122,17 @@
                             <?= session()->getFlashdata('error') ?>
                         </div>
                     <?php endif ?>
-                    <!-- Input Pencarian -->
-                    <div class="form-group">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Cari Nama atau NISN...">
-                    </div>
 
                     <div class="table-responsive">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="order-listing" class="table">
                             <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>NISN</th>
-                                    <th>Nama</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>Foto</th>
-                                    <th>Aksi</th>
+                                <th>No</th>
+                                <th>NISN</th>
+                                <th>Kelas</th>
+                                <th>Nama</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Foto</th>
+                                <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -146,6 +142,7 @@
                                         <td><?= $no++ ?></td>
                                         <td><?= $row['nisn'] ?></td>
                                         <td><?= $row['nama'] ?></td>
+                                        <td><?= $row['nama_kelas'] ?></td>
                                         <td><?= $row['jenis_kelamin'] ?></td>
                                         <td><img src="/foto_siswa/<?= $row['foto'] ?>" alt="foto" width="100"></td>
                                         <td>
@@ -166,18 +163,6 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#searchInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#example1 tbody tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-</script>
-
 <!-- modal edit -->
 <?php foreach ($siswa as $row): ?>
     <div class="modal fade" id="edit<?= $row['id_siswa'] ?>" tabindex="-1" aria-labelledby="edit<?= $row['id_siswa'] ?>"
@@ -228,8 +213,10 @@
                             <label for="jenis_kelamin">Jenis Kelamin</label>
                             <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
                                 <option value="<?= $row['jenis_kelamin'] ?>"><?= $row['jenis_kelamin'] ?></option>
-                                <option value="Laki-laki" <?= $row['jenis_kelamin'] == 'Laki-laki' ? 'selected' : '' ?>>Laki-laki</option>
-                                <option value="Perempuan" <?= $row['jenis_kelamin'] == 'Perempuan' ? 'selected' : '' ?>>Perempuan</option>
+                                <option value="Laki-laki" <?= $row['jenis_kelamin'] == 'Laki-laki' ? 'selected' : '' ?>>
+                                    Laki-laki</option>
+                                <option value="Perempuan" <?= $row['jenis_kelamin'] == 'Perempuan' ? 'selected' : '' ?>>
+                                    Perempuan</option>
                             </select>
                         </div>
 

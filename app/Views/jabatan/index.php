@@ -25,7 +25,7 @@
                         <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
                             data-bs-target="#tambahJabatan">Tambah Jabatan</button>
 
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="order-listing" class="table">
                             <thead>
                                 <tr>
                                     <th>No</th>

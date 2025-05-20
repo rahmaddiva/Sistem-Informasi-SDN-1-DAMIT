@@ -11,6 +11,6 @@ class AuthModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
     protected $protectFields = true;
-    protected $allowedFields = ['nama', 'username', 'password', 'level'];
+    protected $allowedFields = ['nama', 'username', 'id_guru', 'password', 'level'];
 
 }

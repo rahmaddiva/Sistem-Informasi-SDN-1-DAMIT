@@ -103,6 +103,11 @@ $routes->post('/proses_fasilitas', 'FasilitasController::proses_fasilitas');
 $routes->post('/update_fasilitas', 'FasilitasController::update_fasilitas');
 $routes->get('/hapus_fasilitas/(:num)', 'FasilitasController::hapus_fasilitas/$1');
 
+// kelola nilai
+$routes->get('/kelola_nilai', 'NilaiController::index');
+$routes->get('/kelola_nilai/tambah/(:num)', 'NilaiController::tambah_nilai/$1');
+$routes->post('/nilai/simpanMapel', 'NilaiController::simpanMapel');
+
 
 
 
