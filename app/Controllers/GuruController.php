@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\GuruModel;
 use App\Models\JabatanModel;
+use App\Models\MapelModel;
 
 class GuruController extends BaseController
 {
@@ -14,10 +15,13 @@ class GuruController extends BaseController
 
     protected $jabatanModel;
 
+    protected $mapelModel;
+
     public function __construct()
     {
         $this->guruModel = new GuruModel();
         $this->jabatanModel = new JabatanModel();
+        $this->mapelModel = new MapelModel();
     }
 
     public function index()
@@ -31,6 +35,7 @@ class GuruController extends BaseController
             'title' => 'Data Guru',
             'guru' => $this->guruModel->getGuru(),
             'jabatan' => $this->jabatanModel->findAll(),
+            'mapel' => $this->mapelModel->findAll(),
         ];
         return view('guru/index', $data);
     }
@@ -42,7 +47,7 @@ class GuruController extends BaseController
         $validation->setRules([
             'nip' => 'required|is_unique[tb_guru.nip]',
             'nama' => 'required',
-            'id_jabatan' => 'required',
+        w
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -59,13 +64,15 @@ class GuruController extends BaseController
             $foto->move(FCPATH . 'foto_guru', $namaFoto);
         } else {
             $namaFoto = 'default_person.jpg'; // Nama file default yang disimpan di folder 'foto_siswa'
-            copy(FCPATH . 'landingpage/images/img-2', FCPATH . 'foto_guru/' . $namaFoto);
+            copy(FCPATH . 'landingpage/assets/img/team/team-2.jpg   ', FCPATH . 'foto_guru/' . $namaFoto);
         }
 
         $data = [
             'nip' => $this->request->getPost('nip'),
             'nama' => $this->request->getPost('nama'),
             'id_jabatan' => $this->request->getPost('id_jabatan'),
+            'id_mapel1' => $this->request->getPost('id_mapel1'),
+            'id_mapel2' => $this->request->getPost('id_mapel2'),
             'foto' => $namaFoto,
             // 'id_pengguna' => session()->get('id_user'),
         ];
@@ -82,6 +89,8 @@ class GuruController extends BaseController
             'nip' => $this->request->getPost('nip'),
             'nama' => $this->request->getPost('nama'),
             'id_jabatan' => $this->request->getPost('id_jabatan'),
+            'id_mapel1' => $this->request->getPost('id_mapel1'),
+            'id_mapel2' => $this->request->getPost('id_mapel2'),
         ];
 
         // jika gambar diunggah dan valid

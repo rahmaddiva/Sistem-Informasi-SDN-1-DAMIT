@@ -5,14 +5,18 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\AuthModel;
+use App\Models\GuruModel;
+
 
 class AuthController extends BaseController
 {
     protected $authModel;
+    protected $guruModel;
 
     public function __construct()
     {
         $this->authModel = new AuthModel();
+        $this->guruModel = new GuruModel();
         // jika session tidak ada maka akan dialihkan ke halaman login
 
     }
@@ -28,6 +32,7 @@ class AuthController extends BaseController
 
         $data = [
             'title' => 'Kelola Akun',
+            'guru' => $this->guruModel->getGuru(),
             'user' => $this->authModel->findAll(),
         ];
 
@@ -107,6 +112,7 @@ class AuthController extends BaseController
             'username' => $this->request->getPost('username'),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'level' => $this->request->getPost('level'),
+            'id_guru' => $this->request->getPost('id_guru') ?: null, // Jika id_guru tidak ada, set ke null
         ];
 
         $this->authModel->insert($data);
@@ -121,12 +127,15 @@ class AuthController extends BaseController
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
         $level = $this->request->getPost('level');
+        $id_guru = $this->request->getPost('id_guru');
 
         // Siapkan array data yang akan diupdate
         $data = [
             'nama' => $nama,
             'username' => $username,
             'level' => $level,
+            'id_guru' => $id_guru ?: null, // Jika id_guru tidak ada, set ke null
+
         ];
 
 

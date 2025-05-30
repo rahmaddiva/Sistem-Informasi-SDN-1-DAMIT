@@ -21,6 +21,7 @@ class SiswaModel extends Model
             ->join('tb_guru', 'tb_guru.id_guru = tb_siswa.id_guru')
             ->join('tb_user', 'tb_user.id_user = tb_siswa.id_user')
             ->join('tb_semester', 'tb_semester.id_semester = tb_siswa.id_semester')
+            ->where('tb_siswa.id_guru', session()->get('id_guru'))
             ->get()->getResultArray();
     }
 

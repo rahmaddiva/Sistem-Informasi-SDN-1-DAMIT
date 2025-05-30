@@ -50,93 +50,115 @@ class NilaiController extends BaseController
 
     public function tambah_nilai($id_siswa)
     {
+        $id_guru = session()->get('id_guru'); // ambil id guru dari session login
         $siswa = $this->siswaModel->getSiswaById($id_siswa);
-        $mapel = $this->mapelModel->getMapel();
+        $mapel = $this->mapelModel->getMapelByGuru($id_guru); // hanya mapel yang diampu guru tsb
         $data = [
             'title' => 'Tambah Nilai',
             'siswa' => $siswa,
             'mapel' => $mapel,
             'detail_nilai' => $this->detailNilaiModel->getDetailNilai(),
-            'nilai_mapel' => $this->nilaiModel->getNilaiMapel($id_siswa),
+            'nilai_mapel' => $this->nilaiModel->getNilaiMapelBySiswaAndGuru($id_siswa, $id_guru),
+            'catatan' => $this->nilaiModel->getSiswaWithEkstraCatatanAbsensi($id_siswa),
         ];
         return view('nilai/tambah_nilai', $data);
     }
 
     public function simpanMapel()
     {
-        // id_siswa, id_mapel, id_semester, nilai_akhir, id_guru
         $id_siswa = $this->request->getPost('id_siswa');
         $id_mapel = $this->request->getPost('id_mapel');
         $id_semester = $this->request->getPost('id_semester');
+        $id_guru = session()->get('id_guru'); // diasumsikan id_guru disimpan di session
         $nilai_akhir = $this->request->getPost('nilai_akhir');
-        $id_guru = session()->get('id_guru');
+        $nilai_raport = $this->request->getPost('nilai_raport');
+        $rata_formatif = $this->request->getPost('rata_formatif');
+        $rata_sumatif = $this->request->getPost('rata_sumatif');
+
+        // Ambil semua nilai utama
         $data = [
             'id_siswa' => $id_siswa,
             'id_mapel' => $id_mapel,
             'id_semester' => $id_semester,
+            'id_guru' => $id_guru,
             'nilai_akhir' => $nilai_akhir,
-            'id_guru' => $id_guru
+            'nilai_raport' => $nilai_raport,
+            'rata_formatif' => $rata_formatif,
+            'rata_sumatif' => $rata_sumatif,
         ];
 
-        // simpan ke tabel tb_nilai
+        // Tambahkan nilai TP (formatif)
+        for ($i = 1; $i <= 20; $i++) {
+            $data["tp{$i}"] = $this->request->getPost("tp{$i}");
+        }
+
+        // Tambahkan nilai sumatif bab
+        for ($i = 1; $i <= 6; $i++) {
+            $data["sumatif_bab{$i}"] = $this->request->getPost("sumatif_bab{$i}");
+            $data["sumatif_semester_bab{$i}"] = $this->request->getPost("sumatif_semester_bab{$i}");
+        }
+
+        // Simpan ke tb_nilai
         $this->nilaiModel->insert($data);
-        $id_nilai = $this->nilaiModel->insertID();
 
+        $id_nilai = $this->nilaiModel->getInsertID(); // ID auto increment terakhir
 
-        $capaian_kompetensi = $this->request->getPost('capaian_kompetensi');
-        $capaian_kompetensi2 = $this->request->getPost('capaian_kompetensi2');
+        // Ambil data detail capaian kompetensi
         $data_detail = [
             'id_nilai' => $id_nilai,
-            'capaian_kompetensi' => $capaian_kompetensi,
-            'capaian_kompetensi2' => $capaian_kompetensi2
+            'capaian_kompetensi' => $this->request->getPost('capaian_kompetensi'),
+            'capaian_kompetensi2' => $this->request->getPost('capaian_kompetensi2'),
         ];
-        // simpan ke tabeltb_detail_nilai
+
+        // Simpan ke tb_detail_nilai
         $this->detailNilaiModel->insert($data_detail);
+
         session()->setFlashdata('success', 'Data Nilai Berhasil Ditambahkan');
         return redirect()->to(base_url('/kelola_nilai/tambah/' . $id_siswa));
     }
+
 
     public function simpanEkstra()
     {
         $id_siswa = $this->request->getPost('id_siswa');
         $id_semester = $this->request->getPost('id_semester');
-        $nama_ekskul = $this->request->getPost('nama_ekskul');
-        $keterangan = $this->request->getPost('keterangan');
-        $catatan = $this->request->getPost('catatan');
-        $sakit = $this->request->getPost('sakit');
-        $izin = $this->request->getPost('izin');
-        $tanpa_keterangan = $this->request->getPost('tanpa_keterangan');
 
-        // simpan ke dalam tabel tb_ekstrakurikuler
-        $data = [
+        // Ambil data dari input
+        $dataEkstra = [
             'id_siswa' => $id_siswa,
             'id_semester' => $id_semester,
-            'nama_ekskul' => $nama_ekskul,
-            'keterangan' => $keterangan
+            'nama_ekskul' => $this->request->getPost('nama_ekskul'),
+            'keterangan' => $this->request->getPost('keterangan')
         ];
-        // simpan ke tabel tb_ekstrakurikuler
-        $this->ekstrakurikulerModel->insert($data);
-        // simpan ke dalam tabel tb_absensi
-        $data_absensi = [
+
+        $dataAbsensi = [
             'id_siswa' => $id_siswa,
             'id_semester' => $id_semester,
-            'sakit' => $sakit,
-            'izin' => $izin,
-            'tanpa_keterangan' => $tanpa_keterangan
+            'sakit' => $this->request->getPost('sakit') ?? 0,
+            'izin' => $this->request->getPost('izin') ?? 0,
+            'tanpa_keterangan' => $this->request->getPost('tanpa_keterangan') ?? 0
         ];
-        // simpan ke tabel tb_absensi
-        $this->absensiModel->insert($data_absensi);
-        // simpan ke dalam tabel tb_catatan_guru
-        $data_catatan = [
+
+        $dataCatatan = [
             'id_siswa' => $id_siswa,
             'id_semester' => $id_semester,
-            'catatan' => $catatan
+            'catatan' => $this->request->getPost('catatan')
         ];
-        // simpan ke tabel tb_catatan_guru
-        $this->catatanGuruModel->insert($data_catatan);
-        session()->setFlashdata('success', 'Data Ekstrakurikuler Berhasil Ditambahkan');
+
+        try {
+            // Simpan ke masing-masing tabel
+            $this->ekstrakurikulerModel->insert($dataEkstra);
+            $this->absensiModel->insert($dataAbsensi);
+            $this->catatanGuruModel->insert($dataCatatan);
+
+            session()->setFlashdata('success', 'Data Ekstrakurikuler, Absensi, dan Catatan berhasil disimpan.');
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', 'Gagal menyimpan data: ' . $e->getMessage());
+        }
+
         return redirect()->to(base_url('/kelola_nilai/tambah/' . $id_siswa));
     }
+
 
 
 

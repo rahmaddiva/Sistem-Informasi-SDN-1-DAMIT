@@ -36,6 +36,18 @@
                                         value="<?= old('username') ?>">
                                 </div>
                             </div>
+                            <!-- guru  -->
+                            <div class="col-md-3">
+                                <div class="form-group mt-3">
+                                    <label for="id_guru">Guru</label>
+                                    <select name="id_guru" id="id_guru" class="form-control">
+                                        <option value="">Pilih Guru</option>
+                                        <?php foreach ($guru as $g): ?>
+                                            <option value="<?= $g['id_guru'] ?>"><?= $g['nama'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group mt-3">
                                     <label for="password">Password</label>
@@ -48,7 +60,8 @@
                                     <select name="level" id="level" class="form-control">
                                         <option value="">Pilih Level</option>
                                         <option value="admin">Admin</option>
-                                        <option value="user">User</option>
+                                        <option value="guru">Guru</option>
+                                        <option value="wali_kelas">Wali Kelas</option>
                                     </select>
                                 </div>
                             </div>

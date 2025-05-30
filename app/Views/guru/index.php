@@ -15,6 +15,12 @@
                             <?php endforeach ?>
                         </div>
                     <?php endif; ?>
+                    <!-- notifikasi sukses -->
+                    <?php if (session()->getFlashdata('success')): ?>
+                        <div class="alert alert-success" role="alert">
+                            <?= session()->getFlashdata('success') ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="card-body">
                     <?= csrf_field() ?>
@@ -45,6 +51,31 @@
                                     </select>
                                 </div>
                             </div>
+                            <!-- Mapel 1 -->
+                            <div class="col-md-4">
+                                <div class="form-group mt-3">
+                                    <label for="id_mapel_1">Mata Pelajaran 1</label>
+                                    <select name="id_mapel1" id="id_mapel_1" class="form-control">
+                                        <option value="">Pilih Mata Pelajaran</option>
+                                        <?php foreach ($mapel as $row): ?>
+                                            <option value="<?= $row['id_mapel'] ?>"><?= $row['nama_mapel'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Mapel 2 -->
+                            <div class="col-md-4">
+                                <div class="form-group mt-3">
+                                    <label for="id_mapel_2">Mata Pelajaran 2</label>
+                                    <select name="id_mapel2" id="id_mapel_2" class="form-control">
+                                        <option value="">Pilih Mata Pelajaran</option>
+                                        <?php foreach ($mapel as $row): ?>
+                                            <option value="<?= $row['id_mapel'] ?>"><?= $row['nama_mapel'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+
 
                             <div class="col-md-4">
                                 <div class="form-group mt-3">
@@ -114,7 +145,8 @@
                                     <th>No</th>
                                     <th>NIP</th>
                                     <th>Nama</th>
-                                    <th>Jabatan</th>
+                                    <th>Mapel 1</th>
+                                    <th>Mapel 2</th>
                                     <th>Foto</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -126,7 +158,8 @@
                                         <td><?= $no++ ?></td>
                                         <td><?= $row['nip'] ?></td>
                                         <td><?= $row['nama'] ?></td>
-                                        <td><?= $row['nama_jabatan'] ?></td>
+                                        <td><?= $row['nama_mapel1'] ?></td>
+                                        <td><?= $row['nama_mapel2'] ?></td>
                                         <td><img src="/foto_guru/<?= $row['foto'] ?>" alt="foto" width="100"></td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -163,7 +196,7 @@
 <?php foreach ($guru as $row): ?>
     <div class="modal fade" id="edit<?= $row['id_guru'] ?>" tabindex="-1" aria-labelledby="edit<?= $row['id_guru'] ?>"
         aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="edit<?= $row['id_guru'] ?>">Edit Guru</h5>
@@ -174,55 +207,104 @@
                         <?= csrf_field() ?>
                         <input type="hidden" name="id_guru" value="<?= $row['id_guru'] ?>">
                         <input type="hidden" name="foto_lama" value="<?= $row['foto'] ?>">
-                        <div class="form-group mt-3">
-                            <label for="nip">NIP</label>
-                            <input type="number" name="nip" id="nip" class="form-control" value="<?= $row['nip'] ?>">
-                        </div>
-                        <div class="form-group mt-3">
-                            <label for="nama">Nama</label>
-                            <input type="text" name="nama" id="nama" class="form-control" value="<?= $row['nama'] ?>">
-                        </div>
-                        <div class="form-group mt-3">
-                            <label for="id_jabatan">Jabatan</label>
-                            <select name="id_jabatan" id="id_jabatan" class="form-control">
-                                <option value="">Pilih Jabatan</option>
-                                <?php foreach ($jabatan as $jab): ?>
-                                    <option value="<?= $jab['id_jabatan'] ?>" <?= $jab['id_jabatan'] == $row['id_jabatan'] ? 'selected' : '' ?>><?= $jab['nama_jabatan'] ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                        <div class="form-group mt-3">
-                            <label for="foto">Foto</label>
-                            <input type="file" name="foto" id="foto" class="form-control">
-                            <small class="text-muted">Max. 3MB</small>
-                        </div>
-                        <!-- preview foto -->
-                        <div class="form-group mt-3">
-                            <label for="preview">Preview</label>
-                            <img src="foto_guru/<?= $row['foto'] ?>" alt="foto" width="250" id="preview">
-                            <!-- jquery -->
-                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                            <script>
-                                document.getElementById('foto').addEventListener('change', function () {
-                                    const file = this.files[0];
-                                    if (file) {
-                                        const reader = new FileReader();
-                                        reader.onload = function (e) {
-                                            document.getElementById('preview').src = e.target.result;
-                                        }
-                                        reader.readAsDataURL(file);
-                                    }
-                                });
-                            </script>
-                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group mt-3">
+                                    <label for="nip">NIP</label>
+                                    <input type="number" name="nip" id="nip" class="form-control"
+                                        value="<?= $row['nip'] ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mt-3">
+                                    <label for="nama">Nama</label>
+                                    <input type="text" name="nama" id="nama" class="form-control"
+                                        value="<?= $row['nama'] ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mt-3">
+                                    <label for="id_jabatan">Jabatan</label>
+                                    <select name="id_jabatan" id="id_jabatan" class="form-control">
+                                        <option value="">Pilih Jabatan</option>
+                                        <?php foreach ($jabatan as $jab): ?>
+                                            <option value="<?= $jab['id_jabatan'] ?>" <?= $jab['id_jabatan'] == $row['id_jabatan'] ? 'selected' : '' ?>>
+                                                <?= $jab['nama_jabatan'] ?>
+                                            </option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Mapel 1 -->
+                            <div class="col-md-4">
+                                <div class="form-group mt-3">
+                                    <label for="id_mapel_1">Mata Pelajaran 1</label>
+                                    <select name="id_mapel1" id="id_mapel_1" class="form-control">
+                                        <?php if (!empty($row['id_mapel1'])): ?>
+                                            <option value="<?= $row['id_mapel1'] ?>" selected><?= $row['nama_mapel1'] ?>
+                                            </option>
+                                        <?php else: ?>
+                                            <option value="" selected>-- Pilih Mata Pelajaran 1 --</option>
+                                        <?php endif ?>
+                                        <?php foreach ($mapel as $mp): ?>
+                                            <option value="<?= $mp['id_mapel'] ?>"><?= $mp['nama_mapel'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Mapel 2 -->
+                            <div class="col-md-4">
+                                <div class="form-group mt-3">
+                                    <label for="id_mapel_2">Mata Pelajaran 2</label>
+                                    <select name="id_mapel2" id="id_mapel_2" class="form-control">
+                                        <?php if (!empty($row['id_mapel2'])): ?>
+                                            <option value="<?= $row['id_mapel2'] ?>" selected><?= $row['nama_mapel2'] ?>
+                                            </option>
+                                        <?php else: ?>
+                                            <option value="" selected>-- Pilih Mata Pelajaran 2 --</option>
+                                        <?php endif ?>
+                                        <?php foreach ($mapel as $mp): ?>
+                                            <option value="<?= $mp['id_mapel'] ?>"><?= $mp['nama_mapel'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
 
+                            <div class="col-md-4">
+                                <div class="form-group mt-3">
+                                    <label for="foto">Foto</label>
+                                    <input type="file" name="foto" id="foto<?= $row['id_guru'] ?>" class="form-control">
+                                    <small class="text-muted">Max. 3MB</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mt-3">
+                                    <label for="preview">Preview</label>
+                                    <img src="foto_guru/<?= $row['foto'] ?>" alt="foto" width="250"
+                                        id="preview<?= $row['id_guru'] ?>">
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group mt-3">
                             <button type="submit" class="btn btn-primary">Edit</button>
                         </div>
                     </form>
+                    <script>
+                        document.getElementById('foto<?= $row['id_guru'] ?>').addEventListener('change', function () {
+                            const file = this.files[0];
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                    document.getElementById('preview<?= $row['id_guru'] ?>').src = e.target.result;
+                                }
+                                reader.readAsDataURL(file);
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </div>
     </div>
 <?php endforeach ?>
+
 <?= $this->endSection() ?>

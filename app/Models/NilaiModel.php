@@ -11,7 +11,50 @@ class NilaiModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
     protected $protectFields = true;
-    protected $allowedFields = ['id_siswa', 'id_mapel', 'id_semester', 'nilai_akhir', 'id_guru'];
+    protected $allowedFields = [
+        'id_siswa',
+        'id_mapel',
+        'id_semester',
+        'id_guru',
+        'nilai_akhir',
+        // Tambahan jika kamu menyimpan detail nilai formatif & sumatif
+        'tp1',
+        'tp2',
+        'tp3',
+        'tp4',
+        'tp5',
+        'tp6',
+        'tp7',
+        'tp8',
+        'tp9',
+        'tp10',
+        'tp11',
+        'tp12',
+        'tp13',
+        'tp14',
+        'tp15',
+        'tp16',
+        'tp17',
+        'tp18',
+        'tp19',
+        'tp20',
+        'sumatif_bab1',
+        'sumatif_bab2',
+        'sumatif_bab3',
+        'sumatif_bab4',
+        'sumatif_bab5',
+        'sumatif_bab6',
+        'sumatif_semester_bab1',
+        'sumatif_semester_bab2',
+        'sumatif_semester_bab3',
+        'sumatif_semester_bab4',
+        'sumatif_semester_bab5',
+        'sumatif_semester_bab6',
+        'rata_formatif',
+        'rata_sumatif',
+        'nilai_raport'
+    ];
+
 
     public function getNilai()
     {
@@ -31,6 +74,34 @@ class NilaiModel extends Model
             ->join('tb_detail_nilai', 'tb_detail_nilai.id_nilai = tb_nilai.id_nilai')
             ->join('tb_mapel', 'tb_mapel.id_mapel = tb_nilai.id_mapel')
             ->where('tb_nilai.id_siswa', $id_siswa)
+            ->get()->getResultArray();
+    }
+
+    public function getNilaiMapelBySiswaAndGuru($id_siswa, $id_guru)
+    {
+        return $this->where('id_siswa', $id_siswa)
+            ->where('id_guru', $id_guru)
+            ->findAll();
+    }
+
+
+    // ambil data siswa ekstrakurikuler, catatan guru, absensi
+    public function getSiswaWithEkstraCatatanAbsensi($id_siswa)
+    {
+        return $this->db->table('tb_siswa')
+            ->select('
+                tb_siswa.*,
+                tb_ekstrakurikuler.nama_ekskul,
+                tb_ekstrakurikuler.keterangan AS keterangan_ekskul,
+                tb_absensi.sakit,
+                tb_absensi.izin,
+                tb_absensi.tanpa_keterangan,
+                tb_catatan_guru.catatan
+            ')
+            ->join('tb_ekstrakurikuler', 'tb_ekstrakurikuler.id_siswa = tb_siswa.id_siswa', 'left')
+            ->join('tb_absensi', 'tb_absensi.id_siswa = tb_siswa.id_siswa', 'left')
+            ->join('tb_catatan_guru', 'tb_catatan_guru.id_siswa = tb_siswa.id_siswa', 'left')
+            ->where('tb_siswa.id_siswa', $id_siswa)
             ->get()->getResultArray();
     }
 

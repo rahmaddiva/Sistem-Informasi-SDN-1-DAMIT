@@ -107,6 +107,12 @@ $routes->get('/hapus_fasilitas/(:num)', 'FasilitasController::hapus_fasilitas/$1
 $routes->get('/kelola_nilai', 'NilaiController::index');
 $routes->get('/kelola_nilai/tambah/(:num)', 'NilaiController::tambah_nilai/$1');
 $routes->post('/nilai/simpanMapel', 'NilaiController::simpanMapel');
+$routes->post('/nilai/simpanEkstra', 'NilaiController::simpanEkstra');
+
+// kelola mata pelajaran
+$routes->get('/mapel', 'MapelController::index');
+$routes->post('/mapel/proses', 'MapelController::proses');
+$routes->get('/mapel/hapus/(:num)', 'MapelController::hapus/$1');
 
 
 

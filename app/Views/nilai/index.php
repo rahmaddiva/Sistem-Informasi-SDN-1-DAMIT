@@ -51,12 +51,7 @@
                                                             href="kelola_nilai/tambah/<?= $row['id_siswa'] ?>">Tambah
                                                             Nilai</a>
                                                     </li>
-                                                    <li><a class="dropdown-item"
-                                                            href="kelola_nilai/edit/<?= $row['id_siswa'] ?>">Edit Nilai</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item"
-                                                            href="kelola_nilai/hapus/<?= $row['id_siswa'] ?>">Hapus
-                                                            Nilai</a></li>
+
                                                 </ul>
                                             </div>
                                         </td>

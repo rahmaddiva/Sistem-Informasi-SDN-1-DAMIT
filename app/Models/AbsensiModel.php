@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class AbsensiModel extends Model
 {
-    protected $table = 'tb-absensi';
+    protected $table = 'tb_absensi';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
