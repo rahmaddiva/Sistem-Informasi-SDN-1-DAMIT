@@ -17,11 +17,10 @@ class SiswaModel extends Model
     {
         return $this->db->table('tb_siswa')
             ->select('tb_siswa.*, tb_guru.nama as nama_guru, tb_kelas.nama_kelas, tb_semester.nama_semester , tb_semester.tahun_ajaran')
-            ->join('tb_kelas', 'tb_kelas.id_kelas = tb_siswa.id_kelas')
+            ->join('tb_kelas', 'tb_kelas.id_kelas = tb_siswa.id_kelas', 'left')
             ->join('tb_guru', 'tb_guru.id_guru = tb_siswa.id_guru')
-            ->join('tb_user', 'tb_user.id_user = tb_siswa.id_user')
-            ->join('tb_semester', 'tb_semester.id_semester = tb_siswa.id_semester')
-            ->where('tb_siswa.id_guru', session()->get('id_guru'))
+            ->join('tb_user', 'tb_user.id_user = tb_siswa.id_user', 'left')
+            ->join('tb_semester', 'tb_semester.id_semester = tb_siswa.id_semester', 'left')
             ->get()->getResultArray();
     }
 

@@ -47,7 +47,7 @@ class GuruController extends BaseController
         $validation->setRules([
             'nip' => 'required|is_unique[tb_guru.nip]',
             'nama' => 'required',
-        w
+        
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {

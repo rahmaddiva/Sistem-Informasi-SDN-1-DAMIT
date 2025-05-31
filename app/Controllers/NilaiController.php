@@ -57,8 +57,9 @@ class NilaiController extends BaseController
             'title' => 'Tambah Nilai',
             'siswa' => $siswa,
             'mapel' => $mapel,
+            'semester' => $this->semesterModel->getSemesterbyidSiswa($id_siswa),
             'detail_nilai' => $this->detailNilaiModel->getDetailNilai(),
-            'nilai_mapel' => $this->nilaiModel->getNilaiMapelBySiswaAndGuru($id_siswa, $id_guru),
+            'nilai_mapel' => $this->nilaiModel->getNilaiMapelBySiswaAndGuru($id_siswa),
             'catatan' => $this->nilaiModel->getSiswaWithEkstraCatatanAbsensi($id_siswa),
         ];
         return view('nilai/tambah_nilai', $data);
@@ -66,11 +67,12 @@ class NilaiController extends BaseController
 
     public function simpanMapel()
     {
+
+
         $id_siswa = $this->request->getPost('id_siswa');
         $id_mapel = $this->request->getPost('id_mapel');
         $id_semester = $this->request->getPost('id_semester');
         $id_guru = session()->get('id_guru'); // diasumsikan id_guru disimpan di session
-        $nilai_akhir = $this->request->getPost('nilai_akhir');
         $nilai_raport = $this->request->getPost('nilai_raport');
         $rata_formatif = $this->request->getPost('rata_formatif');
         $rata_sumatif = $this->request->getPost('rata_sumatif');
@@ -81,11 +83,25 @@ class NilaiController extends BaseController
             'id_mapel' => $id_mapel,
             'id_semester' => $id_semester,
             'id_guru' => $id_guru,
-            'nilai_akhir' => $nilai_akhir,
             'nilai_raport' => $nilai_raport,
             'rata_formatif' => $rata_formatif,
             'rata_sumatif' => $rata_sumatif,
         ];
+
+
+        // periksa guru mengisi nilai mapel yang sama
+        $existingNilai = $this->nilaiModel->where([
+            'id_siswa' => $id_siswa,
+            'id_mapel' => $id_mapel,
+            'id_semester' => $id_semester,
+            'id_guru' => $id_guru
+        ])->first();
+
+        if ($existingNilai) {
+            session()->setFlashdata('error', 'Guru sudah mengisi nilai untuk mata pelajaran ini.');
+            return redirect()->to(base_url('/kelola_nilai/tambah/' . $id_siswa));
+        }
+
 
         // Tambahkan nilai TP (formatif)
         for ($i = 1; $i <= 20; $i++) {
@@ -94,13 +110,12 @@ class NilaiController extends BaseController
 
         // Tambahkan nilai sumatif bab
         for ($i = 1; $i <= 6; $i++) {
-            $data["sumatif_bab{$i}"] = $this->request->getPost("sumatif_bab{$i}");
+            $data["sumatif_lingkup_bab{$i}"] = $this->request->getPost("sumatif_lingkup_bab{$i}");
             $data["sumatif_semester_bab{$i}"] = $this->request->getPost("sumatif_semester_bab{$i}");
         }
 
         // Simpan ke tb_nilai
         $this->nilaiModel->insert($data);
-
         $id_nilai = $this->nilaiModel->getInsertID(); // ID auto increment terakhir
 
         // Ambil data detail capaian kompetensi
@@ -112,7 +127,6 @@ class NilaiController extends BaseController
 
         // Simpan ke tb_detail_nilai
         $this->detailNilaiModel->insert($data_detail);
-
         session()->setFlashdata('success', 'Data Nilai Berhasil Ditambahkan');
         return redirect()->to(base_url('/kelola_nilai/tambah/' . $id_siswa));
     }
