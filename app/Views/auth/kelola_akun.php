@@ -166,9 +166,9 @@
                             <select name="level" id="level" class="form-control">
                                 <option value="">Pilih Level</option>
                                 <option value="admin" <?= $row['level'] == 'admin' ? 'selected' : '' ?>>Admin</option>
-                                <option value="user" <?= $row['level'] == 'user' ? 'selected' : '' ?>>User</option>
-                                <option value="wali_kelas" <?= $row['level'] == 'wali_kelas' ? 'selected' : '' ?>>Wali Kelas
-                                </option>
+                                <option value="guru" <?= $row['level'] == 'guru' ? 'selected' : '' ?>>Guru</option>
+                                <option value="wali_kelas" <?= $row['level'] == 'wali_kelas' ? 'selected' : '' ?>>Wali
+                                    Kelas</option>
                             </select>
                         </div>
                         <div class="form-group mt-3">

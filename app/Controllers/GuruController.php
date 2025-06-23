@@ -22,6 +22,11 @@ class GuruController extends BaseController
         $this->guruModel = new GuruModel();
         $this->jabatanModel = new JabatanModel();
         $this->mapelModel = new MapelModel();
+        $session = session();
+        // jika tidak ada session maka kembali ke halaman login
+        if (!$session->get('id_user')) {
+            return redirect()->to(base_url('/login'));
+        }
     }
 
     public function index()
@@ -30,6 +35,12 @@ class GuruController extends BaseController
         // jika tidak ada session maka kembali ke halaman login
         if (!$session->get('id_user')) {
             return redirect()->to(base_url('/login'));
+        }
+
+        $session = session();
+        $allowedLevels = ['wali_kelas', 'guru', 'admin'];
+        if (!in_array($session->get('level'), $allowedLevels)) {
+            return redirect()->to('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
         $data = [
             'title' => 'Data Guru',
@@ -47,7 +58,7 @@ class GuruController extends BaseController
         $validation->setRules([
             'nip' => 'required|is_unique[tb_guru.nip]',
             'nama' => 'required',
-        
+
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -71,8 +82,6 @@ class GuruController extends BaseController
             'nip' => $this->request->getPost('nip'),
             'nama' => $this->request->getPost('nama'),
             'id_jabatan' => $this->request->getPost('id_jabatan'),
-            'id_mapel1' => $this->request->getPost('id_mapel1'),
-            'id_mapel2' => $this->request->getPost('id_mapel2'),
             'foto' => $namaFoto,
             // 'id_pengguna' => session()->get('id_user'),
         ];
@@ -89,8 +98,7 @@ class GuruController extends BaseController
             'nip' => $this->request->getPost('nip'),
             'nama' => $this->request->getPost('nama'),
             'id_jabatan' => $this->request->getPost('id_jabatan'),
-            'id_mapel1' => $this->request->getPost('id_mapel1'),
-            'id_mapel2' => $this->request->getPost('id_mapel2'),
+
         ];
 
         // jika gambar diunggah dan valid
@@ -129,6 +137,5 @@ class GuruController extends BaseController
         }
         $this->guruModel->delete($id);
         return redirect()->to('/kelola_guru')->with('success', 'Data berhasil dihapus');
-
     }
 }

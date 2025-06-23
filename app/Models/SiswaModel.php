@@ -35,6 +35,15 @@ class SiswaModel extends Model
             ->get()->getResultArray();
     }
 
+    public function getSiswaWithKelas($id_siswa)
+    {
+        return $this->select('tb_siswa.*, tb_kelas.nama_kelas')
+            ->join('tb_kelas', 'tb_kelas.id_kelas = tb_siswa.id_kelas')
+            ->where('tb_siswa.id_siswa', $id_siswa)
+            ->first();
+    }
+
+
     public function getSiswaById($id_siswa)
     {
         $builder = $this->db->table($this->table);
@@ -47,4 +56,15 @@ class SiswaModel extends Model
         return $builder->get()->getRowArray();
     }
 
+    public function getSiswaById_user($id_user)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('tb_siswa.*, tb_guru.nama as nama_guru, tb_kelas.nama_kelas, tb_semester.nama_semester, tb_semester.tahun_ajaran')
+            ->join('tb_kelas', 'tb_kelas.id_kelas = tb_siswa.id_kelas')
+            ->join('tb_guru', 'tb_guru.id_guru = tb_siswa.id_guru')
+            ->join('tb_user', 'tb_user.id_user = tb_siswa.id_user')
+            ->join('tb_semester', 'tb_semester.id_semester = tb_siswa.id_semester')
+            ->where('tb_siswa.id_user', $id_user);
+        return $builder->get()->getRowArray(); // Ubah ke getRowArray()
+    }
 }

@@ -14,6 +14,11 @@ class FotoController extends BaseController
     public function __construct()
     {
         $this->fotoModel = new FotoModel();
+        $session = session();
+        // jika tidak ada session maka kembali ke halaman login
+        if (!$session->get('id_user')) {
+            return redirect()->to(base_url('/login'));
+        }
     }
 
     public function index()

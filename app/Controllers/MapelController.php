@@ -18,6 +18,11 @@ class MapelController extends BaseController
     {
         $this->mapelModel = new MapelModel();
         $this->guruModel = new GuruModel();
+        $session = session();
+        // jika tidak ada session maka kembali ke halaman login
+        if (!$session->get('id_user')) {
+            return redirect()->to(base_url('/login'));
+        }
     }
 
     public function index()
@@ -52,7 +57,6 @@ class MapelController extends BaseController
             session()->setFlashdata('success', 'Mata Pelajaran berhasil ditambahkan.');
         }
         return redirect()->to('/mapel');
-
     }
 
     public function hapus($id_mapel)

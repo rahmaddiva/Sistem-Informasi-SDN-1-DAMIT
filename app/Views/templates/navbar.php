@@ -18,8 +18,16 @@
     <div class="navbar-menu-wrapper d-flex align-items-top">
         <ul class="navbar-nav">
             <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-                <h1 class="welcome-text">Selamat Datang, <span
-                        class="text-black fw-bold"><?= session()->get('nama') ?></span>
+                <h1 class="welcome-text">Selamat Datang,
+
+                    <?php if (session()->get('level') === 'siswa'): ?>
+                        <a href="<?= base_url('/profil_siswa') ?>">
+                            <span class="text-black fw-bold"><?= session()->get('nama') ?></span>
+                        </a>
+                    <?php else: ?>
+                        <span class="text-black fw-bold"><?= session()->get('nama') ?></span>
+                    <?php endif; ?>
+
 
             </li>
         </ul>
@@ -32,18 +40,13 @@
                     <input type="text" class="form-control">
                 </div>
             </li>
-            <li class="nav-item">
-                <form class="search-form" action="#">
-                    <i class="icon-search"></i>
-                    <input type="search" class="form-control" placeholder="Search Here" title="Search here">
-                </form>
-            </li>
-           
-    
+
+            <a href="/pengaturan" class="btn btn-light btn-sm float-end">
+                <i class="mdi mdi-cog-outline"></i> Pengaturan
+            </a>
+
         </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-            data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+
+
     </div>
 </nav>

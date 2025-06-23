@@ -14,10 +14,20 @@ class FasilitasController extends BaseController
     public function __construct()
     {
         $this->fasilitasModel = new FasilitasModel();
+        $session = session();
+        // jika tidak ada session maka kembali ke halaman login
+        if (!$session->get('id_user')) {
+            return redirect()->to(base_url('/login'));
+        }
     }
 
     public function index()
     {
+        $session = session();
+        $allowedLevels = ['admin'];
+        if (!in_array($session->get('level'), $allowedLevels)) {
+            return redirect()->to('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        }
         $data = [
             'title' => 'Fasilitas',
             'fasilitas' => $this->fasilitasModel->findAll()

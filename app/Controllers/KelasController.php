@@ -14,6 +14,11 @@ class KelasController extends BaseController
     public function __construct()
     {
         $this->kelasModel = new KelasModel();
+        $session = session();
+        // jika tidak ada session maka kembali ke halaman login
+        if (!$session->get('id_user')) {
+            return redirect()->to(base_url('/login'));
+        }
     }
 
     public function index()
@@ -22,6 +27,11 @@ class KelasController extends BaseController
         // jika tidak ada session maka kembali ke halaman login
         if (!$session->get('id_user')) {
             return redirect()->to(base_url('/login'));
+        }
+        $session = session();
+        $allowedLevels = ['admin'];
+        if (!in_array($session->get('level'), $allowedLevels)) {
+            return redirect()->to('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
         $data = [
             'title' => 'Data Kelas',
@@ -96,7 +106,6 @@ class KelasController extends BaseController
         }
         $this->kelasModel->where('id_kelas', $id_kelas)->set($data)->update();
         return redirect()->to('/kelola_kelas')->with('success', 'Data berhasil diubah');
-
     }
 
     public function hapus_kelas($id)
@@ -114,5 +123,4 @@ class KelasController extends BaseController
         $this->kelasModel->delete($id);
         return redirect()->to('/kelola_kelas')->with('success', 'Data berhasil dihapus');
     }
-
 }

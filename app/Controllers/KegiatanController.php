@@ -14,6 +14,11 @@ class KegiatanController extends BaseController
     public function __construct()
     {
         $this->KegiatanModel = new KegiatanModel();
+        $session = session();
+        // jika tidak ada session maka kembali ke halaman login
+        if (!$session->get('id_user')) {
+            return redirect()->to(base_url('/login'));
+        }
     }
 
 
@@ -23,6 +28,11 @@ class KegiatanController extends BaseController
         // jika tidak ada session maka kembali ke halaman login
         if (!$session->get('id_user')) {
             return redirect()->to(base_url('/login'));
+        }
+        $session = session();
+        $allowedLevels = ['admin'];
+        if (!in_array($session->get('level'), $allowedLevels)) {
+            return redirect()->to('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
         $data = [
             'title' => 'Kelola Kegiatan',

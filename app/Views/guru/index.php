@@ -51,30 +51,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <!-- Mapel 1 -->
-                            <div class="col-md-4">
-                                <div class="form-group mt-3">
-                                    <label for="id_mapel_1">Mata Pelajaran 1</label>
-                                    <select name="id_mapel1" id="id_mapel_1" class="form-control">
-                                        <option value="">Pilih Mata Pelajaran</option>
-                                        <?php foreach ($mapel as $row): ?>
-                                            <option value="<?= $row['id_mapel'] ?>"><?= $row['nama_mapel'] ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- Mapel 2 -->
-                            <div class="col-md-4">
-                                <div class="form-group mt-3">
-                                    <label for="id_mapel_2">Mata Pelajaran 2</label>
-                                    <select name="id_mapel2" id="id_mapel_2" class="form-control">
-                                        <option value="">Pilih Mata Pelajaran</option>
-                                        <?php foreach ($mapel as $row): ?>
-                                            <option value="<?= $row['id_mapel'] ?>"><?= $row['nama_mapel'] ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                </div>
-                            </div>
 
 
                             <div class="col-md-4">
@@ -145,8 +121,7 @@
                                     <th>No</th>
                                     <th>NIP</th>
                                     <th>Nama</th>
-                                    <th>Mapel 1</th>
-                                    <th>Mapel 2</th>
+                                    <th>Jabatan</th>
                                     <th>Foto</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -158,8 +133,9 @@
                                         <td><?= $no++ ?></td>
                                         <td><?= $row['nip'] ?></td>
                                         <td><?= $row['nama'] ?></td>
-                                        <td><?= $row['nama_mapel1'] ?></td>
-                                        <td><?= $row['nama_mapel2'] ?></td>
+                                        <td>
+                                            <?= $row['nama_jabatan'] ? $row['nama_jabatan'] : 'Tidak ada jabatan' ?>
+                                        </td>
                                         <td><img src="/foto_guru/<?= $row['foto'] ?>" alt="foto" width="100"></td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -235,40 +211,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <!-- Mapel 1 -->
-                            <div class="col-md-4">
-                                <div class="form-group mt-3">
-                                    <label for="id_mapel_1">Mata Pelajaran 1</label>
-                                    <select name="id_mapel1" id="id_mapel_1" class="form-control">
-                                        <?php if (!empty($row['id_mapel1'])): ?>
-                                            <option value="<?= $row['id_mapel1'] ?>" selected><?= $row['nama_mapel1'] ?>
-                                            </option>
-                                        <?php else: ?>
-                                            <option value="" selected>-- Pilih Mata Pelajaran 1 --</option>
-                                        <?php endif ?>
-                                        <?php foreach ($mapel as $mp): ?>
-                                            <option value="<?= $mp['id_mapel'] ?>"><?= $mp['nama_mapel'] ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- Mapel 2 -->
-                            <div class="col-md-4">
-                                <div class="form-group mt-3">
-                                    <label for="id_mapel_2">Mata Pelajaran 2</label>
-                                    <select name="id_mapel2" id="id_mapel_2" class="form-control">
-                                        <?php if (!empty($row['id_mapel2'])): ?>
-                                            <option value="<?= $row['id_mapel2'] ?>" selected><?= $row['nama_mapel2'] ?>
-                                            </option>
-                                        <?php else: ?>
-                                            <option value="" selected>-- Pilih Mata Pelajaran 2 --</option>
-                                        <?php endif ?>
-                                        <?php foreach ($mapel as $mp): ?>
-                                            <option value="<?= $mp['id_mapel'] ?>"><?= $mp['nama_mapel'] ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                </div>
-                            </div>
+
 
                             <div class="col-md-4">
                                 <div class="form-group mt-3">

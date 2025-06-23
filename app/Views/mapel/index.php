@@ -41,8 +41,21 @@
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label for="nama_mapel" class="form-label">Nama Mata Pelajaran</label>
-                                            <input type="text" class="form-control" id="nama_mapel" name="nama_mapel"
-                                                required>
+                                            <select class="form-control" id="nama_mapel" name="nama_mapel" required>
+                                                <option value="">Pilih Mata Pelajaran</option>
+                                                <option value="Matematika">Matematika</option>
+                                                <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                                                <option value="Bahasa Inggris">Bahasa Inggris</option>
+                                                <option value="Ilmu Pengetahuan Alam & Sosial">Ilmu Pengetahuan Alam
+                                                </option>
+                                                <option value="Pendidikan Agama & Budi Pekerti">Pendidikan Agama & Budi
+                                                    Pekerti</option>
+                                                <option value="Pendidikan Pancasila">Pendidikan Pancasila</option>
+                                                <option value="Seni Rupa">Seni Rupa</option>
+                                                <option value="Seni Musik">Seni Musik</option>
+                                                <option value="Pendidikan Al-Quran">Pendidikan Al-Quran</option>
+                                                <option value="Seni Tari">Seni Tari</option>
+                                            </select>
                                         </div>
                                         <div class="mb-3">
                                             <label for="id_guru" class="form-label">Guru Pengajar</label>
@@ -91,8 +104,7 @@
                                                 Edit
                                             </button>
                                             <!-- modal edit mapel  -->
-                                            <div class="modal fade"
-                                                id="editMapelModal<?= $row['id_mapel'] ?>" tabindex="-1"
+                                            <div class="modal fade" id="editMapelModal<?= $row['id_mapel'] ?>" tabindex="-1"
                                                 aria-labelledby="editMapelModalLabel<?= $row['id_mapel'] ?>"
                                                 aria-hidden="true">
                                                 <div class="modal-dialog">
@@ -101,25 +113,60 @@
                                                             <h5 class="modal-title"
                                                                 id="editMapelModalLabel<?= $row['id_mapel'] ?>">Edit
                                                                 Mata Pelajaran</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
                                                         </div>
                                                         <form action="<?= base_url('mapel/proses') ?>" method="post">
                                                             <input type="hidden" name="id_mapel"
                                                                 value="<?= $row['id_mapel'] ?>">
                                                             <div class="modal-body">
                                                                 <div class="mb-3">
-                                                                    <label for="nama_mapel"
-                                                                        class="form-label">Nama Mata Pelajaran</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="nama_mapel" name="nama_mapel"
-                                                                        value="<?= $row['nama_mapel'] ?>" required>
+                                                                    <label for="nama_mapel" class="form-label">Nama Mata
+                                                                        Pelajaran</label>
+                                                                    <select class="form-control" id="nama_mapel"
+                                                                        name="nama_mapel" required>
+                                                                        <option value="">Pilih Mata Pelajaran</option>
+                                                                        <option value="Matematika"
+                                                                            <?= ($row['nama_mapel'] == 'Matematika') ? 'selected' : '' ?>>
+                                                                            Matematika</option>
+                                                                        <option value="Bahasa Indonesia"
+                                                                            <?= ($row['nama_mapel'] == 'Bahasa Indonesia') ? 'selected' : '' ?>>
+                                                                            Bahasa Indonesia</option>
+                                                                        <option value="Bahasa Inggris"
+                                                                            <?= ($row['nama_mapel'] == 'Bahasa Inggris') ? 'selected' : '' ?>>
+                                                                            Bahasa Inggris</option>
+                                                                        <option value="Ilmu Pengetahuan Alam & Sosial"
+                                                                            <?= ($row['nama_mapel'] == 'Ilmu Pengetahuan Alam & Sosial') ? 'selected' : '' ?>>
+                                                                            Ilmu Pengetahuan Alam & Sosial</option>
+                                                                        <option value="Pendidikan Agama & Budi Pekerti"
+                                                                            <?= ($row['nama_mapel'] == 'Pendidikan Agama & Budi Pekerti') ? 'selected' : '' ?>>
+                                                                            Pendidikan Agama & Budi Pekerti</option>
+                                                                        <option value="Pendidikan Pancasila"
+                                                                            <?= ($row['nama_mapel'] == 'Pendidikan Pancasila') ? 'selected' : '' ?>>
+                                                                            Pendidikan Pancasila</option>
+                                                                        <option value="Seni Rupa"
+                                                                            <?= ($row['nama_mapel'] == 'Seni Rupa') ? 'selected' : '' ?>>
+                                                                            Seni Rupa</option>
+                                                                        <option value="Seni Musik"
+                                                                            <?= ($row['nama_mapel'] == 'Seni Musik') ? 'selected' : '' ?>>
+                                                                            Seni Musik</option>
+                                                                        <option value="Pendidikan Al-Quran"
+                                                                            <?= ($row['nama_mapel'] == 'Pendidikan Al-Quran') ? 'selected' : '' ?>>
+                                                                            Pendidikan Al-Quran</option>
+                                                                        <option value="Seni Tari"
+                                                                            <?= ($row['nama_mapel'] == 'Seni Tari') ? 'selected' : '' ?>>
+                                                                            Seni Tari</option>
+                                                                    </select>
+                                                                    <div class="invalid-feedback">
+                                                                        Silakan pilih mata pelajaran.
+                                                                    </div>
+
                                                                 </div>
                                                                 <div class="mb-3">
-                                                                    <label for="id_guru"
-                                                                        class="form-label">Guru Pengajar</label>
-                                                                    <select class="form-select" id="id_guru"
-                                                                        name="id_guru" required>
+                                                                    <label for="id_guru" class="form-label">Guru
+                                                                        Pengajar</label>
+                                                                    <select class="form-select" id="id_guru" name="id_guru"
+                                                                        required>
                                                                         <?php foreach ($guru as $guruItem): ?>
                                                                             <option value="<?= $guruItem['id_guru'] ?>"
                                                                                 <?= ($guruItem['id_guru'] == $row['id_guru']) ? 'selected' : '' ?>>

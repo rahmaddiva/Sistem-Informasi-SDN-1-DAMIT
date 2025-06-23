@@ -17,7 +17,6 @@ class NilaiModel extends Model
         'id_semester',
         'id_guru',
         'nilai_akhir',
-        // Tambahan jika kamu menyimpan detail nilai formatif & sumatif
         'tp1',
         'tp2',
         'tp3',
@@ -111,6 +110,13 @@ class NilaiModel extends Model
             ->get()->getResultArray();
     }
 
-
-
+    public function getNilaiByIdSiswa($id_siswa)
+    {
+        return $this->select('tb_nilai.*, tb_mapel.nama_mapel, tb_guru.nama as nama_guru, tb_semester.nama_semester, tb_semester.tahun_ajaran')
+            ->join('tb_mapel', 'tb_mapel.id_mapel = tb_nilai.id_mapel', 'left')
+            ->join('tb_guru', 'tb_guru.id_guru = tb_nilai.id_guru', 'left')
+            ->join('tb_semester', 'tb_semester.id_semester = tb_nilai.id_semester', 'left')
+            ->where('tb_nilai.id_siswa', $id_siswa)
+            ->findAll();
+    }
 }

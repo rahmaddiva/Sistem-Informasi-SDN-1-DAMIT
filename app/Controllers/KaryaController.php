@@ -21,6 +21,11 @@ class KaryaController extends BaseController
         $this->karyaModel = new KaryaModel();
         $this->siswaModel = new SiswaModel();
         $this->guruModel = new GuruModel();
+        $session = session();
+        // jika tidak ada session maka kembali ke halaman login
+        if (!$session->get('id_user')) {
+            return redirect()->to(base_url('/login'));
+        }
     }
 
     public function index()
@@ -30,6 +35,11 @@ class KaryaController extends BaseController
         if (!$session->get('id_user')) {
             return redirect()->to(base_url('/login'));
         }
+        $session = session();
+        $allowedLevels = ['admin'];
+        if (!in_array($session->get('level'), $allowedLevels)) {
+            return redirect()->to('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        }
         $data = [
             'title' => 'Data Karya',
             'karya' => $this->karyaModel->getKarya(),
@@ -38,7 +48,6 @@ class KaryaController extends BaseController
         ];
 
         return view('karya/index', $data);
-
     }
 
     public function karya()

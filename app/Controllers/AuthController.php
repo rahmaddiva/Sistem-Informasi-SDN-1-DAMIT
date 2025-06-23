@@ -6,17 +6,20 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\AuthModel;
 use App\Models\GuruModel;
+use App\Models\SiswaModel;
 
 
 class AuthController extends BaseController
 {
     protected $authModel;
     protected $guruModel;
+    protected $siswaModel;
 
     public function __construct()
     {
         $this->authModel = new AuthModel();
         $this->guruModel = new GuruModel();
+        $this->siswaModel = new SiswaModel();
         // jika session tidak ada maka akan dialihkan ke halaman login
 
     }
@@ -29,6 +32,11 @@ class AuthController extends BaseController
         if (!$session->get('id_user')) {
             return redirect()->to(base_url('/login'));
         }
+        $session = session();
+        $allowedLevels = ['admin'];
+        if (!in_array($session->get('level'), $allowedLevels)) {
+            return redirect()->to('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        }
 
         $data = [
             'title' => 'Kelola Akun',
@@ -38,6 +46,51 @@ class AuthController extends BaseController
 
         return view('auth/kelola_akun', $data);
     }
+
+    public function pengaturan()
+    {
+        $id_user = session()->get('id_user');
+
+        $siswaModel = new SiswaModel();
+        $authModel = new AuthModel();
+
+        $data = [
+            'title' => 'Pengaturan',
+            'siswa' => $siswaModel->getSiswaById_user($id_user),
+            'user' => $authModel->where('id_user', $id_user)->first(),
+        ];
+
+        return view('auth/pengaturan', $data);
+    }
+
+
+    public function updatePassword()
+    {
+        $id_user = session()->get('id_user');
+        $authModel = new AuthModel();
+
+        $password_lama = $this->request->getPost('password_lama');
+        $password_baru = $this->request->getPost('password_baru');
+        $konfirmasi_password = $this->request->getPost('konfirmasi_password');
+
+        $user = $authModel->find($id_user);
+
+        if (!password_verify($password_lama, $user['password'])) {
+            return redirect()->back()->with('error', 'Password lama salah.');
+        }
+
+        if ($password_baru != $konfirmasi_password) {
+            return redirect()->back()->with('error', 'Konfirmasi password tidak cocok.');
+        }
+
+        $authModel->update($id_user, [
+            'password' => password_hash($password_baru, PASSWORD_DEFAULT),
+        ]);
+
+        return redirect()->back()->with('success', 'Password berhasil diperbarui.');
+    }
+
+
 
     public function login()
     {
@@ -62,35 +115,43 @@ class AuthController extends BaseController
             'username' => 'required',
             'password' => 'required',
         ]);
-        // jika input data tidak sesuai dengan validasi
+
         if (!$validation->withRequest($this->request)->run()) {
             return redirect()->to('/login')->withInput()->with('validation', $validation);
         }
+
         $data = [
             'username' => $this->request->getPost('username'),
             'password' => $this->request->getPost('password'),
         ];
+
         $user = $this->authModel->where('username', $data['username'])->first();
-        // jika data user tidak ditemukan
+
         if (!$user) {
             return redirect()->to('/login')->withInput()->with('error', 'Username tidak ditemukan');
         }
-        // jika password tidak sesuai dengan password yang ada di database
+
         if (!password_verify($data['password'], $user['password'])) {
             return redirect()->to('/login')->withInput()->with('error', 'Password salah');
         }
 
-        // jika data user ditemukan maka akan disimpan pada session
         $session = session();
         $session->set([
             'id_user' => $user['id_user'],
-            'id_guru' => $user['id_guru'],
+            'id_guru' => $user['id_guru'] ?? null,
             'username' => $user['username'],
             'nama' => $user['nama'],
             'level' => $user['level'],
         ]);
-        return redirect()->to('/dashboard');
+
+        // Redirect berdasarkan level
+        if ($user['level'] == 'siswa') {
+            return redirect()->to('/profil_siswa');
+        } else {
+            return redirect()->to('/dashboard');
+        }
     }
+
 
     public function proses_akun()
     {
@@ -162,7 +223,4 @@ class AuthController extends BaseController
         $this->authModel->delete($id);
         return redirect()->to('kelola_akun')->with('success', 'Data Berhasil Dihapus');
     }
-
-
-
 }

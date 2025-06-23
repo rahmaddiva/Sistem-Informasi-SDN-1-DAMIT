@@ -10,10 +10,14 @@ class JabatanController extends BaseController
 {
     protected $jabatanModel;
 
-
     public function __construct()
     {
         $this->jabatanModel = new JabatanModel();
+        $session = session();
+        // jika tidak ada session maka kembali ke halaman login
+        if (!$session->get('id_user')) {
+            return redirect()->to(base_url('/login'));
+        }
     }
     public function index()
     {
@@ -21,6 +25,11 @@ class JabatanController extends BaseController
         // jika tidak ada session maka kembali ke halaman login
         if (!$session->get('id_user')) {
             return redirect()->to(base_url('/login'));
+        }
+        $session = session();
+        $allowedLevels = ['admin'];
+        if (!in_array($session->get('level'), $allowedLevels)) {
+            return redirect()->to('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
         $data = [
             'title' => 'Data Jabatan',
@@ -63,5 +72,4 @@ class JabatanController extends BaseController
         $this->jabatanModel->delete($id);
         return redirect()->to('/kelola_jabatan')->with('success', 'Data berhasil dihapus');
     }
-
 }

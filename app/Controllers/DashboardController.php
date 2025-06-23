@@ -46,6 +46,12 @@ class DashboardController extends BaseController
         $this->fotoModel = new FotoModel();
         $this->profilModel = new ProfilModel();
         $this->videoModel = new VideoModel();
+
+        $session = session();
+        // jika tidak ada session maka kembali ke halaman login
+        if (!$session->get('id_user')) {
+            return redirect()->to(base_url('/login'));
+        }
     }
 
     public function index()
@@ -54,6 +60,15 @@ class DashboardController extends BaseController
         // jika tidak ada session maka kembali ke halaman login
         if (!$session->get('id_user')) {
             return redirect()->to(base_url('/login'));
+        }
+        $session = session();
+
+        $idGuruLogin = $session->get('id_guru');
+        $isAdmin = $session->get('level') === 'admin';
+        $isWali_Kelas = $session->get('level') === 'wali_kelas';
+
+        if (!$idGuruLogin && !$isAdmin && !$isWali_Kelas) {
+            return redirect()->to('/login')->with('error', 'Silakan login sebagai guru atau admin.');
         }
         $kegiatan = $this->kegiatanModel->findAll();
 
@@ -111,6 +126,4 @@ class DashboardController extends BaseController
         // Tampilkan view dengan data dan pagination
         return view('dashboard/landingpage', $data);
     }
-
-
 }

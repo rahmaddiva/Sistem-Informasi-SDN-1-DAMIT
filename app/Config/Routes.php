@@ -5,6 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+
+ 
 $routes->get('/', 'DashboardController::landingpage');
 $routes->get('/login', 'AuthController::login');
 $routes->get('/logout', 'AuthController::logout');
@@ -13,6 +15,8 @@ $routes->get('/dashboard', 'DashboardController::index');
 
 // kelola akun
 $routes->get('/kelola_akun', 'AuthController::kelola_akun');
+$routes->get('/pengaturan', 'AuthController::pengaturan');
+$routes->post('/update-password', 'AuthController::updatePassword');
 $routes->post('/proses_akun', 'AuthController::proses_akun');
 $routes->post('/update_akun', 'AuthController::update_akun');
 $routes->get('/hapus/(:num)', 'AuthController::hapus/$1');
@@ -22,6 +26,13 @@ $routes->get('/kelola_guru', 'GuruController::index');
 $routes->post('/proses_guru', 'GuruController::proses_guru');
 $routes->post('/update_guru', 'GuruController::update_guru');
 $routes->get('/hapus_guru/(:num)', 'GuruController::hapus_guru/$1');
+
+
+// kelola_semester
+$routes->get('/kelola_semester', 'SemesterController::index');
+$routes->post('/proses', 'SemesterController::proses');
+$routes->post('/update_semester', 'SemesterController::update');
+$routes->get('/hapus_semester/(:num)', 'SemesterController::delete/$1');
 
 // kelola jabatan
 $routes->get('/kelola_jabatan', 'JabatanController::index');
@@ -88,6 +99,7 @@ $routes->get('/profil_sekolah', 'ProfilController::profil_sekolah');
 // siswa
 $routes->get('/siswa', 'SiswaController::kelas');
 $routes->get('siswa/siswaByKelas/(:num)', 'SiswaController::siswaByKelas/$1');
+$routes->get('/profil_siswa', 'SiswaController::profil_siswa');
 
 // kelola_video
 $routes->get('/kelola_video', 'VideoController::index');
@@ -108,13 +120,15 @@ $routes->get('/kelola_nilai', 'NilaiController::index');
 $routes->get('/kelola_nilai/tambah/(:num)', 'NilaiController::tambah_nilai/$1');
 $routes->post('/nilai/simpanMapel', 'NilaiController::simpanMapel');
 $routes->post('/nilai/simpanEkstra', 'NilaiController::simpanEkstra');
+$routes->get('/wali_kelas', 'NilaiController::dataSiswaWaliKelas');
+$routes->get('cetak-rapor-semua', 'NilaiController::cetakRaporSemua');
+$routes->get('kelola_nilai/rekapPdf', 'NilaiController::rekapPdf');
+$routes->get('kelola_nilai/cetakRapor/(:num)', 'NilaiController::cetakRapor/$1');
+$routes->get('nilai/delete/(:num)', 'NilaiController::deleteNilai/$1');
 
+// Cetak Rekap Nilai ke Excel
+$routes->get('kelola_nilai/exportExcel', 'NilaiController::rekapExcel');
 // kelola mata pelajaran
 $routes->get('/mapel', 'MapelController::index');
 $routes->post('/mapel/proses', 'MapelController::proses');
 $routes->get('/mapel/hapus/(:num)', 'MapelController::hapus/$1');
-
-
-
-
-

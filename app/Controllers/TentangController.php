@@ -14,10 +14,20 @@ class TentangController extends BaseController
     public function __construct()
     {
         $this->tentangModel = new TentangModel();
+        $session = session();
+        // jika tidak ada session maka kembali ke halaman login
+        if (!$session->get('id_user')) {
+            return redirect()->to(base_url('/login'));
+        }
     }
 
     public function index()
     {
+        $session = session();
+        $allowedLevels = ['admin'];
+        if (!in_array($session->get('level'), $allowedLevels)) {
+            return redirect()->to('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        }
         $session = session();
         // jika tidak ada session maka kembali ke halaman login
         if (!$session->get('id_user')) {
@@ -45,5 +55,4 @@ class TentangController extends BaseController
         $this->tentangModel->where('id_tentang', $id_tentang)->set($data)->update();
         return redirect()->to('/kelola_tentang')->with('success', 'Data berhasil diperbarui');
     }
-
 }

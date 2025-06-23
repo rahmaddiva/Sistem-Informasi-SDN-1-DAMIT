@@ -47,6 +47,17 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group mt-3">
+                                    <label for="id_guru">Semester</label>
+                                    <select name="id_semester" id="id_semester" class="form-control">
+                                        <option value="">Pilih Semester</option>
+                                        <?php foreach ($semester as $sem): ?>
+                                            <option value="<?= $sem['id_semester'] ?>"><?= $sem['nama_semester'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mt-3">
                                     <label for="id_guru">Wali Kelas</label>
                                     <select name="id_guru" id="id_guru" class="form-control">
                                         <option value="">Pilih Wali Kelas</option>
@@ -82,11 +93,11 @@
                                     <!-- jquery -->
                                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                                     <script>
-                                        document.getElementById('foto').addEventListener('change', function () {
+                                        document.getElementById('foto').addEventListener('change', function() {
                                             const file = this.files[0];
                                             if (file) {
                                                 const reader = new FileReader();
-                                                reader.onload = function (e) {
+                                                reader.onload = function(e) {
                                                     document.getElementById('preview').src = e.target.result;
                                                 }
                                                 reader.readAsDataURL(file);
@@ -200,6 +211,16 @@
                         </div>
 
                         <div class="form-group mt-3">
+                            <label for="id_semester">Semester</label>
+                            <select name="id_semester" id="id_semester" class="form-control">
+                                <option value="">Pilih Semester</option>
+                                <?php foreach ($semester as $sem): ?>
+                                    <option value="<?= $sem['id_semester'] ?>" <?= $sem['id_semester'] == $row['id_semester'] ? 'selected' : '' ?>><?= $sem['nama_semester'] ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-3">
                             <label for="id_guru">Wali Kelas</label>
                             <select name="id_guru" id="id_guru" class="form-control">
                                 <option value="">Pilih Wali Kelas</option>
@@ -232,11 +253,11 @@
                             <!-- jquery -->
                             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                             <script>
-                                document.getElementById('foto').addEventListener('change', function () {
+                                document.getElementById('foto').addEventListener('change', function() {
                                     const file = this.files[0];
                                     if (file) {
                                         const reader = new FileReader();
-                                        reader.onload = function (e) {
+                                        reader.onload = function(e) {
                                             document.getElementById('preview').src = e.target.result;
                                         }
                                         reader.readAsDataURL(file);

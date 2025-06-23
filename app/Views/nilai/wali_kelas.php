@@ -21,7 +21,23 @@
                         </div>
                     <?php endif ?>
                     <div class="table-responsive">
-                        <?php if (session()->get('level') == 'wali_kelas'): ?>
+                        <?php if (in_array(session()->get('level'), ['admin', 'wali_kelas'])): ?>
+                            <div class="row mb-3">
+                                <div class="col-auto">
+                                    <a href="<?= base_url('kelola_nilai/rekapPdf') ?>" class="btn btn-danger">
+                                        <i class="fa fa-file-pdf"></i> Rekap Nilai (PDF)
+                                    </a>
+                                    <a href="<?= base_url('cetak-rapor-semua') ?>" target="_blank" class="btn btn-primary">
+                                        <i class="fa fa-print"></i> Cetak Rapor Semua Siswa
+                                    </a>
+                                    <!-- eksport excel -->
+                                    <a href="<?= base_url('kelola_nilai/exportExcel') ?>" class="btn btn-success">
+                                        <i class="fa fa-file-excel"></i> Export Nilai ke Excel
+                                    </a>    
+                                </div>
+
+                                
+                            </div>
                         <?php endif; ?>
 
                         <table id="order-listing" class="table table-bordered table-striped">
@@ -55,13 +71,11 @@
                                                             Tambah Nilai
                                                         </a>
                                                     </li>
-                                                    <?php if (in_array(session()->get('level'), ['admin', 'wali_kelas'])): ?>
-                                                        <li>
-                                                            <a class="dropdown-item" href="<?= base_url('kelola_nilai/cetakRapor/' . $row['id_siswa']) ?>" target="_blank">
-                                                                Cetak Rapor
-                                                            </a>
-                                                        </li>
-                                                    <?php endif; ?>
+                                                    <li>
+                                                        <a class="dropdown-item" href="<?= base_url('kelola_nilai/cetakRapor/' . $row['id_siswa']) ?>" target="_blank">
+                                                            Cetak Rapor
+                                                        </a>
+                                                    </li>
                                                 </ul>
 
                                             </div>

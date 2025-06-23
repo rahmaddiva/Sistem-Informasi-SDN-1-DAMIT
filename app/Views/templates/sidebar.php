@@ -87,18 +87,30 @@
 
         <li class="nav-item nav-category">Penilaian</li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#penilaian" aria-expanded="false"
-                aria-controls="penilaian" id="userMenu">
-                <i class="menu-icon mdi mdi-account-school"></i>
-                <span class="menu-title">Kelola Nilai</span>
-            </a>
+            <?php if (in_array(session()->get('level'), ['admin', 'wali_kelas', 'guru'])): ?>
+                <a class="nav-link" data-bs-toggle="collapse" href="#penilaian" aria-expanded="false"
+                    aria-controls="penilaian" id="userMenu">
+                    <i class="menu-icon mdi mdi-account-school"></i>
+                    <span class="menu-title">Kelola Nilai</span>
+                </a>
+            <?php endif; ?>
             <div class="collapse" id="penilaian">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="/kelola_nilai">Kelola Nilai</a>
-                    </li>
-                    <li class="nav-item"> <a class="nav-link" href="/kelola_semester">Semester</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="/mapel">Kelola Mapel</a>
-                    </li>
+                    <?php if (in_array(session()->get('level'), ['admin', 'wali_kelas', 'guru'])): ?>
+                        <li class="nav-item"> <a class="nav-link" href="/kelola_nilai">Kelola Nilai</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (in_array(session()->get('level'), ['admin', 'wali_kelas'])): ?>
+                        <li class="nav-item"> <a class="nav-link" href="/wali_kelas">Wali Kelas</a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php if (session()->get('level') == 'admin'): ?>
+                        <li class="nav-item"> <a class="nav-link" href="/kelola_semester">Semester</a>
+                        </li>
+                        <li class="nav-item"> <a class="nav-link" href="/mapel">Kelola Mapel</a>
+                        </li>
+                    <?php endif; ?>
 
                 </ul>
             </div>
@@ -113,12 +125,13 @@
                     <span class="menu-title">Kelola Pengaduan</span>
                 </a>
             </li>
-        <?php endif; ?>=
+        <?php endif; ?>
         <li class="nav-item">
             <a class="nav-link" href="/logout">
                 <i class="menu-icon mdi mdi-logout"></i>
                 <span class="menu-title">Logout</span>
             </a>
         </li>
+
     </ul>
 </nav>
